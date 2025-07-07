@@ -14,7 +14,6 @@
       margin: auto;
       padding: 20px;
     }
-    /* Titre centré, gros, noir */
     h1 {
       text-align: center;
       color: #000000;
@@ -50,7 +49,7 @@
     button {
       margin-top: 10px;
       padding: 8px 12px;
-      background-color: #3b82f6; /* bleu clair */
+      background-color: #3b82f6;
       color: white;
       border: none;
       border-radius: 4px;
@@ -58,7 +57,7 @@
       transition: background-color 0.3s ease;
     }
     button:hover {
-      background-color: #2563eb; /* bleu plus foncé au survol */
+      background-color: #2563eb;
     }
     .synopsis-card {
       background-color: #fff;
@@ -89,7 +88,7 @@
     }
     .export-btn {
       margin-right: 10px;
-      background-color: #3b82f6; /* même bleu que les boutons */
+      background-color: #3b82f6;
       color: white;
       border: none;
       border-radius: 4px;
@@ -123,14 +122,19 @@
       <input type="text" id="episodes" placeholder="Ex : 13" />
     </div>
 
-    <label for="saisons">Nombre de saisons :</label>
-    <input type="text" id="saisons" placeholder="Ex : 2" />
+    <div id="saisons-field">
+      <label for="saisons">Nombre de saisons :</label>
+      <input type="text" id="saisons" placeholder="Ex : 2" />
+    </div>
 
     <label for="duree">Durée :</label>
     <input type="text" id="duree" placeholder="Ex : 1h40" />
 
     <label for="age">Âge conseillé :</label>
     <input type="text" id="age" placeholder="Ex : 12+, 16+, Tous publics" />
+
+    <label for="annee">Année de diffusion :</label>
+    <input type="text" id="annee" placeholder="Ex : 2024" />
 
     <label for="langue">Langue :</label>
     <select id="langue">
@@ -156,18 +160,21 @@
     const list = document.getElementById("synopsisList");
     const typeSelect = document.getElementById("type");
     const episodesField = document.getElementById("episodes-field");
+    const saisonsField = document.getElementById("saisons-field");
     let imageDataURL = "";
 
-    function updateEpisodesVisibility() {
+    function updateFieldsVisibility() {
       if (typeSelect.value === "OVA") {
         episodesField.style.display = "none";
+        saisonsField.style.display = "none";
       } else {
         episodesField.style.display = "block";
+        saisonsField.style.display = "block";
       }
     }
 
-    typeSelect.addEventListener("change", updateEpisodesVisibility);
-    window.addEventListener("DOMContentLoaded", updateEpisodesVisibility);
+    typeSelect.addEventListener("change", updateFieldsVisibility);
+    window.addEventListener("DOMContentLoaded", updateFieldsVisibility);
 
     document.getElementById("imageFile").addEventListener("change", function (e) {
       const file = e.target.files[0];
@@ -193,6 +200,7 @@
         saisons: document.getElementById("saisons").value,
         duree: document.getElementById("duree").value,
         age: document.getElementById("age").value,
+        annee: document.getElementById("annee").value,
         langue: document.getElementById("langue").value,
         image: imageDataURL,
         synopsis: document.getElementById("synopsis").value,
@@ -201,7 +209,7 @@
       afficherFiche(fiche);
       form.reset();
       imageDataURL = "";
-      updateEpisodesVisibility();
+      updateFieldsVisibility();
     });
 
     function afficherFiche(fiche) {
@@ -217,9 +225,10 @@
         `<p><strong>Type :</strong> ${fiche.type}</p>
          <p><strong>Genres :</strong> ${fiche.genres}</p>` +
         (fiche.type !== "OVA" ? `<p><strong>Nombre d'épisodes :</strong> ${fiche.episodes}</p>` : "") +
-        (fiche.saisons ? `<p><strong>Nombre de saisons :</strong> ${fiche.saisons}</p>` : "") +
+        (fiche.type !== "OVA" && fiche.saisons ? `<p><strong>Nombre de saisons :</strong> ${fiche.saisons}</p>` : "") +
         `<p><strong>Durée :</strong> ${fiche.duree}</p>
          <p><strong>Âge conseillé :</strong> ${fiche.age}</p>
+         <p><strong>Année de diffusion :</strong> ${fiche.annee}</p>
          <p><strong>Langue :</strong> ${fiche.langue}</p>
          <p><strong>Synopsis :</strong><br>${fiche.synopsis}</p>
          <div class="export-group">
