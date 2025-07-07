@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Fiches Manga</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #fffaf3;
+            color: #333;
+            max-width: 700px;
+            margin: auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #8b008b;
+        }
+        form {
+            background-color: #fff0f5;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 6px;
+            margin-top: 4px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 15px;
+            background-color: #8b008b;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .synopsis-card {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 6px;
+        }
+        .synopsis-card h2 {
+            margin: 0 0 5px 0;
+            color: #6a006a;
+        }
+        .synopsis-card img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fiches Manga</h1>
+    <form id="synopsisForm">
+        <label for="titre">Titre du manga :</label>
+        <input type="text" id="titre" required>
+
+        <label for="type">Type :</label>
+        <select id="type">
+            <option>Série</option>
+            <option>Film</option>
+        </select>
+
+        <label for="genres">Genres :</label>
+        <input type="text" id="genres" placeholder="Ex : Yuri, Romance">
+
+        <label for="episodes">Nombre d'épisodes :</label>
+        <input type="text" id="episodes" placeholder="Ex : 13">
+
+        <label for="duree">Durée :</label>
+        <input type="text" id="duree" placeholder="Ex : 1h40">
+
+        <label for="age">Âge conseillé :</label>
+         <input type="text" id="age" placeholder="Ex : 12+">
+
+        <label for="image">Image (URL) :</label>
+        <input type="text" id="image" placeholder="Colle ici l'URL d'une image">
+
+        <label for="synopsis">Synopsis :</label>
+        <textarea id="synopsis" rows="5" placeholder="Écris ici le synopsis..."></textarea>
+
+        <button type="submit">Ajouter</button>
+    </form>
+
+    <div id="synopsisList"></div>
+
+    <script>
+        document.getElementById('synopsisForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const titre = document.getElementById('titre').value;
+            const type = document.getElementById('type').value;
+            const genres = document.getElementById('genres').value;
+            const episodes = document.getElementById('episodes').value;
+            const duree = document.getElementById('duree').value;
+            const age = document.getElementById('age').value;
+            const image = document.getElementById('image').value;
+            const synopsis = document.getElementById('synopsis').value;
+
+            const div = document.createElement('div');
+            div.classList.add('synopsis-card');
+            div.innerHTML = `<h2>${titre}</h2>
+                             <p><strong>Type :</strong> ${type}</p>
+                             <p><strong>Genres :</strong> ${genres}</p>
+                             <p><strong>Nombre d'épisodes :</strong> ${episodes}</p>
+                             <p><strong>Durée :</strong> ${duree}</p>
+                             <p><strong>Âge conseillé :</strong> ${age}</p>
+                             <p><strong>Synopsis :</strong><br>${synopsis}</p>` +
+                             (image ? `<img src="${image}" alt="Image de ${titre}">` : '');
+
+            document.getElementById('synopsisList').appendChild(div);
+
+            document.getElementById('synopsisForm').reset();
+        });
+    </script>
+</body>
+</html>
