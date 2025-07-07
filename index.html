@@ -9,14 +9,14 @@
     body {
       font-family: 'Segoe UI', sans-serif;
       background-color: #fffaf3;
-      color: #333;
+      color: #000000; /* Texte en noir */
       max-width: 700px;
       margin: auto;
       padding: 20px;
     }
     h1 {
       text-align: center;
-      color: #8b008b;
+      color: #000000; /* Titre en noir */
     }
     form {
       background-color: #fff0f5;
@@ -28,6 +28,7 @@
     label {
       display: block;
       margin-top: 10px;
+      color: #000000; /* Labels en noir */
     }
     input[type="text"],
     textarea,
@@ -38,6 +39,7 @@
       border-radius: 4px;
       border: 1px solid #ccc;
       box-sizing: border-box;
+      color: #000000;
     }
     input[type="file"] {
       margin-top: 8px;
@@ -45,11 +47,15 @@
     button {
       margin-top: 10px;
       padding: 8px 12px;
-      background-color: #8b008b;
+      background-color: #9370db; /* violet clair */
       color: white;
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #7a5dcc; /* violet un peu plus foncé au survol */
     }
     .synopsis-card {
       background-color: #fff;
@@ -58,10 +64,11 @@
       padding: 10px;
       border-radius: 6px;
       position: relative;
+      color: #000000; /* texte noir dans les fiches aussi */
     }
     .synopsis-card h2 {
       margin: 0 0 10px 0;
-      color: #6a006a;
+      color: #000000; /* titre fiche noir */
       text-align: center;
       font-size: 1.8em;
     }
@@ -79,6 +86,16 @@
     }
     .export-btn {
       margin-right: 10px;
+      background-color: #9370db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .export-btn:hover {
+      background-color: #7a5dcc;
     }
   </style>
 </head>
@@ -102,6 +119,9 @@
       <label for="episodes">Nombre d'épisodes :</label>
       <input type="text" id="episodes" placeholder="Ex : 13" />
     </div>
+
+    <label for="saisons">Nombre de saisons :</label>
+    <input type="text" id="saisons" placeholder="Ex : 2" />
 
     <label for="duree">Durée :</label>
     <input type="text" id="duree" placeholder="Ex : 1h40" />
@@ -167,6 +187,7 @@
         type: typeSelect.value,
         genres: document.getElementById("genres").value,
         episodes: document.getElementById("episodes").value,
+        saisons: document.getElementById("saisons").value,
         duree: document.getElementById("duree").value,
         age: document.getElementById("age").value,
         langue: document.getElementById("langue").value,
@@ -193,6 +214,7 @@
         `<p><strong>Type :</strong> ${fiche.type}</p>
          <p><strong>Genres :</strong> ${fiche.genres}</p>` +
         (fiche.type !== "OVA" ? `<p><strong>Nombre d'épisodes :</strong> ${fiche.episodes}</p>` : "") +
+        (fiche.saisons ? `<p><strong>Nombre de saisons :</strong> ${fiche.saisons}</p>` : "") +
         `<p><strong>Durée :</strong> ${fiche.duree}</p>
          <p><strong>Âge conseillé :</strong> ${fiche.age}</p>
          <p><strong>Langue :</strong> ${fiche.langue}</p>
