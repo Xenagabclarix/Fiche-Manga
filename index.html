@@ -1,220 +1,257 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8" />
-    <title>Fiches Manga</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #fffaf3;
-            color: #333;
-            max-width: 700px;
-            margin: auto;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            color: #8b008b;
-        }
-        form {
-            background-color: #fff0f5;
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-        input[type="text"], textarea, select {
-            width: 100%;
-            padding: 6px;
-            margin-top: 4px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-        input[type="file"] {
-            margin-top: 8px;
-        }
-        button {
-            margin-top: 10px;
-            padding: 8px 12px;
-            background-color: #8b008b;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .synopsis-card {
-            background-color: #fff;
-            border: 1px solid #ccc;
-            margin-bottom: 20px;
-            padding: 10px;
-            border-radius: 6px;
-            position: relative;
-        }
-        .synopsis-card h2 {
-            margin: 0 0 10px 0;
-            color: #6a006a;
-            text-align: center;
-            font-size: 1.8em;
-        }
-        .synopsis-card img {
-            max-width: 50%;
-            height: auto;
-            margin-top: 10px;
-            border-radius: 6px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .export-group {
-            margin-top: 10px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Fiches Manga</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fffaf3;
+      color: #333;
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #8b008b;
+    }
+    form {
+      background-color: #fff0f5;
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 6px;
+      margin-top: 4px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    input[type="file"] {
+      margin-top: 8px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 12px;
+      background-color: #8b008b;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .synopsis-card {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+      padding: 10px;
+      border-radius: 6px;
+      position: relative;
+    }
+    .synopsis-card h2 {
+      margin: 0 0 10px 0;
+      color: #6a006a;
+      text-align: center;
+      font-size: 1.8em;
+    }
+    .synopsis-card img {
+      max-width: 50%;
+      height: auto;
+      margin-top: 10px;
+      border-radius: 6px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .export-group {
+      margin-top: 10px;
+    }
+    .export-btn {
+      margin-right: 10px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Fiches Manga</h1>
-    <form id="synopsisForm">
-        <label for="titre">Titre du manga :</label>
-        <input type="text" id="titre" required />
+  <h1>Fiches Manga</h1>
+  <form id="synopsisForm">
+    <label for="titre">Titre du manga :</label>
+    <input type="text" id="titre" required />
 
-        <label for="type">Type :</label>
-        <select id="type">
-            <option>Série</option>
-            <option>Film</option>
-        </select>
+    <label for="type">Type :</label>
+    <select id="type">
+      <option>Série</option>
+      <option>Film</option>
+      <option>OVA</option>
+    </select>
 
-        <label for="genres">Genres :</label>
-        <input type="text" id="genres" placeholder="Ex : Yuri, Romance" />
+    <label for="genres">Genres :</label>
+    <input type="text" id="genres" placeholder="Ex : Yuri, Romance" />
 
-        <label for="episodes">Nombre d'épisodes :</label>
-        <input type="text" id="episodes" placeholder="Ex : 13" />
+    <div id="episodes-field">
+      <label for="episodes">Nombre d'épisodes :</label>
+      <input type="text" id="episodes" placeholder="Ex : 13" />
+    </div>
 
-        <label for="duree">Durée :</label>
-        <input type="text" id="duree" placeholder="Ex : 1h40" />
+    <label for="duree">Durée :</label>
+    <input type="text" id="duree" placeholder="Ex : 1h40" />
 
-        <label for="age">Âge conseillé :</label>
-        <input type="text" id="age" placeholder="Ex : 12+, 16+, Tous publics" />
+    <label for="age">Âge conseillé :</label>
+    <input type="text" id="age" placeholder="Ex : 12+, 16+, Tous publics" />
 
-        <label for="imageFile">Image (depuis ton ordinateur) :</label>
-        <input type="file" id="imageFile" accept="image/*" />
+    <label for="langue">Langue :</label>
+    <select id="langue">
+      <option>FR</option>
+      <option>VOSTFR</option>
+      <option>VO</option>
+      <option>VF</option>
+    </select>
 
-        <label for="synopsis">Synopsis :</label>
-        <textarea id="synopsis" rows="5" placeholder="Écris ici le synopsis..."></textarea>
+    <label for="imageFile">Image (depuis ton ordinateur) :</label>
+    <input type="file" id="imageFile" accept="image/*" />
 
-        <button type="submit">Ajouter</button>
-    </form>
+    <label for="synopsis">Synopsis :</label>
+    <textarea id="synopsis" rows="5" placeholder="Écris ici le synopsis..."></textarea>
 
-    <div id="synopsisList"></div>
+    <button type="submit">Ajouter</button>
+  </form>
 
-    <script>
-        const form = document.getElementById('synopsisForm');
-        const list = document.getElementById('synopsisList');
-        let imageDataURL = '';
+  <div id="synopsisList"></div>
 
-        document.getElementById('imageFile').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(evt) {
-                    imageDataURL = evt.target.result;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                imageDataURL = '';
-            }
+  <script>
+    const form = document.getElementById("synopsisForm");
+    const list = document.getElementById("synopsisList");
+    const typeSelect = document.getElementById("type");
+    const episodesField = document.getElementById("episodes-field");
+    let imageDataURL = "";
+
+    function updateEpisodesVisibility() {
+      if (typeSelect.value === "OVA") {
+        episodesField.style.display = "none";
+      } else {
+        episodesField.style.display = "block";
+      }
+    }
+
+    typeSelect.addEventListener("change", updateEpisodesVisibility);
+    window.addEventListener("DOMContentLoaded", updateEpisodesVisibility);
+
+    document.getElementById("imageFile").addEventListener("change", function (e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (evt) {
+          imageDataURL = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        imageDataURL = "";
+      }
+    });
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const fiche = {
+        titre: document.getElementById("titre").value,
+        type: typeSelect.value,
+        genres: document.getElementById("genres").value,
+        episodes: document.getElementById("episodes").value,
+        duree: document.getElementById("duree").value,
+        age: document.getElementById("age").value,
+        langue: document.getElementById("langue").value,
+        image: imageDataURL,
+        synopsis: document.getElementById("synopsis").value,
+      };
+
+      afficherFiche(fiche);
+      form.reset();
+      imageDataURL = "";
+      updateEpisodesVisibility();
+    });
+
+    function afficherFiche(fiche) {
+      const div = document.createElement("div");
+      div.classList.add("synopsis-card");
+
+      const id = "fiche-" + Date.now();
+      div.setAttribute("id", id);
+
+      div.innerHTML =
+        `<h2>${fiche.titre}</h2>` +
+        (fiche.image ? `<img src="${fiche.image}" alt="Image de ${fiche.titre}">` : "") +
+        `<p><strong>Type :</strong> ${fiche.type}</p>
+         <p><strong>Genres :</strong> ${fiche.genres}</p>` +
+        (fiche.type !== "OVA" ? `<p><strong>Nombre d'épisodes :</strong> ${fiche.episodes}</p>` : "") +
+        `<p><strong>Durée :</strong> ${fiche.duree}</p>
+         <p><strong>Âge conseillé :</strong> ${fiche.age}</p>
+         <p><strong>Langue :</strong> ${fiche.langue}</p>
+         <p><strong>Synopsis :</strong><br>${fiche.synopsis}</p>
+         <div class="export-group">
+           <button class="export-btn" onclick="exportToImage('${id}', '${fiche.titre}')">🖼️ Enregistrer en image</button>
+           <button class="export-btn" onclick="exportToPDF('${id}', '${fiche.titre}')">📄 Exporter en PDF</button>
+         </div>`;
+
+      list.appendChild(div);
+    }
+
+    function cacherBoutons(id) {
+      const card = document.getElementById(id);
+      const buttons = card.querySelectorAll(".export-btn");
+      buttons.forEach((btn) => (btn.style.display = "none"));
+    }
+
+    function montrerBoutons(id) {
+      const card = document.getElementById(id);
+      const buttons = card.querySelectorAll(".export-btn");
+      buttons.forEach((btn) => (btn.style.display = "inline-block"));
+    }
+
+    function exportToImage(id, title) {
+      cacherBoutons(id);
+      const node = document.getElementById(id);
+      html2canvas(node)
+        .then((canvas) => {
+          const link = document.createElement("a");
+          link.download = `${title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}.png`;
+          link.href = canvas.toDataURL();
+          link.click();
+          montrerBoutons(id);
+        })
+        .catch(() => {
+          montrerBoutons(id);
         });
+    }
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const fiche = {
-                titre: document.getElementById('titre').value,
-                type: document.getElementById('type').value,
-                genres: document.getElementById('genres').value,
-                episodes: document.getElementById('episodes').value,
-                duree: document.getElementById('duree').value,
-                age: document.getElementById('age').value,
-                image: imageDataURL,
-                synopsis: document.getElementById('synopsis').value
-            };
-
-            afficherFiche(fiche);
-            form.reset();
-            imageDataURL = '';
+    function exportToPDF(id, title) {
+      cacherBoutons(id);
+      const node = document.getElementById(id);
+      html2canvas(node)
+        .then((canvas) => {
+          const { jsPDF } = window.jspdf;
+          const pdf = new jsPDF();
+          const imgData = canvas.toDataURL("image/png");
+          const imgProps = pdf.getImageProperties(imgData);
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+          pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+          pdf.save(`${title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}.pdf`);
+          montrerBoutons(id);
+        })
+        .catch(() => {
+          montrerBoutons(id);
         });
-
-        function afficherFiche(fiche) {
-            const div = document.createElement('div');
-            div.classList.add('synopsis-card');
-
-            const id = "fiche-" + Date.now();
-            div.setAttribute('id', id);
-
-            div.innerHTML = `<h2>${fiche.titre}</h2>` +
-                            (fiche.image ? `<img src="${fiche.image}" alt="Image de ${fiche.titre}">` : '') +
-                            `<p><strong>Type :</strong> ${fiche.type}</p>
-                             <p><strong>Genres :</strong> ${fiche.genres}</p>
-                             <p><strong>Nombre d'épisodes :</strong> ${fiche.episodes}</p>
-                             <p><strong>Durée :</strong> ${fiche.duree}</p>
-                             <p><strong>Âge conseillé :</strong> ${fiche.age}</p>
-                             <p><strong>Synopsis :</strong><br>${fiche.synopsis}</p>
-                             <div class="export-group">
-                                <button class="export-btn" onclick="exportToImage('${id}', '${fiche.titre}')">🖼️ Enregistrer en image</button>
-                                <button class="export-btn" onclick="exportToPDF('${id}', '${fiche.titre}')">📄 Exporter en PDF</button>
-                             </div>`;
-
-            list.appendChild(div);
-        }
-
-        function cacherBoutons(id) {
-            const card = document.getElementById(id);
-            const buttons = card.querySelectorAll('.export-btn');
-            buttons.forEach(btn => btn.style.display = 'none');
-        }
-
-        function montrerBoutons(id) {
-            const card = document.getElementById(id);
-            const buttons = card.querySelectorAll('.export-btn');
-            buttons.forEach(btn => btn.style.display = 'inline-block');
-        }
-
-        function exportToImage(id, title) {
-            cacherBoutons(id);
-            const node = document.getElementById(id);
-            html2canvas(node).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.png`;
-                link.href = canvas.toDataURL();
-                link.click();
-                montrerBoutons(id);
-            }).catch(() => {
-                montrerBoutons(id);
-            });
-        }
-
-        function exportToPDF(id, title) {
-            cacherBoutons(id);
-            const node = document.getElementById(id);
-            html2canvas(node).then(canvas => {
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF();
-                const imgData = canvas.toDataURL("image/png");
-                const imgProps = pdf.getImageProperties(imgData);
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                pdf.save(`${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pdf`);
-                montrerBoutons(id);
-            }).catch(() => {
-                montrerBoutons(id);
-            });
-        }
-    </script>
+    }
+  </script>
 </body>
 </html>
