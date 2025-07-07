@@ -14,23 +14,12 @@
       margin: auto;
       padding: 20px;
     }
-    /* Double titre avec légère ombre */
+    /* Titre centré, gros, noir */
     h1 {
       text-align: center;
       color: #000000;
-      font-size: 2.5em;
-      position: relative;
-      line-height: 1.2;
+      font-size: 3em;
       margin-bottom: 30px;
-    }
-    h1::after {
-      content: attr(data-text);
-      position: absolute;
-      top: 5px;
-      left: 3px;
-      color: #444444;
-      z-index: -1;
-      opacity: 0.5;
     }
     form {
       background-color: #fff0f5;
@@ -114,7 +103,7 @@
   </style>
 </head>
 <body>
-  <h1 data-text="Fiches Manga">Fiches Manga</h1>
+  <h1>Fiches Manga</h1>
   <form id="synopsisForm">
     <label for="titre">Titre du manga :</label>
     <input type="text" id="titre" required />
