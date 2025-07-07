@@ -9,14 +9,14 @@
     body {
       font-family: 'Segoe UI', sans-serif;
       background-color: #fffaf3;
-      color: #000000;
+      color: #000;
       max-width: 700px;
       margin: auto;
       padding: 20px;
     }
     h1 {
       text-align: center;
-      color: #000000;
+      color: #000;
       font-size: 3em;
       margin-bottom: 30px;
     }
@@ -30,7 +30,6 @@
     label {
       display: block;
       margin-top: 10px;
-      color: #000000;
     }
     input[type="text"],
     textarea,
@@ -41,7 +40,6 @@
       border-radius: 4px;
       border: 1px solid #ccc;
       box-sizing: border-box;
-      color: #000000;
     }
     input[type="file"] {
       margin-top: 8px;
@@ -65,12 +63,9 @@
       margin-bottom: 20px;
       padding: 10px;
       border-radius: 6px;
-      position: relative;
-      color: #000000;
+      color: #000;
     }
     .synopsis-card h2 {
-      margin: 0 0 10px 0;
-      color: #000000;
       text-align: center;
       font-size: 1.8em;
     }
@@ -94,7 +89,6 @@
       border-radius: 4px;
       padding: 6px 10px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
     }
     .export-btn:hover {
       background-color: #2563eb;
@@ -115,26 +109,26 @@
     </select>
 
     <label for="genres">Genres :</label>
-    <input type="text" id="genres" placeholder="Ex : Yuri, Romance" />
+    <input type="text" id="genres" />
 
     <div id="episodes-field">
       <label for="episodes">Nombre d'épisodes :</label>
-      <input type="text" id="episodes" placeholder="Ex : 13" />
+      <input type="text" id="episodes" />
     </div>
 
     <div id="saisons-field">
       <label for="saisons">Nombre de saisons :</label>
-      <input type="text" id="saisons" placeholder="Ex : 2" />
+      <input type="text" id="saisons" />
     </div>
 
     <label for="duree">Durée :</label>
-    <input type="text" id="duree" placeholder="Ex : 1h40" />
+    <input type="text" id="duree" />
 
     <label for="age">Âge conseillé :</label>
-    <input type="text" id="age" placeholder="Ex : 12+, 16+, Tous publics" />
+    <input type="text" id="age" />
 
     <label for="annee">Année de diffusion :</label>
-    <input type="text" id="annee" placeholder="Ex : 2024" />
+    <input type="text" id="annee" />
 
     <label for="langue">Langue :</label>
     <select id="langue">
@@ -144,11 +138,11 @@
       <option>VF</option>
     </select>
 
-    <label for="imageFile">Image (depuis ton ordinateur) :</label>
+    <label for="imageFile">Image :</label>
     <input type="file" id="imageFile" accept="image/*" />
 
     <label for="synopsis">Synopsis :</label>
-    <textarea id="synopsis" rows="5" placeholder="Écris ici le synopsis..."></textarea>
+    <textarea id="synopsis" rows="5"></textarea>
 
     <button type="submit">Ajouter</button>
   </form>
@@ -164,7 +158,7 @@
     let imageDataURL = "";
 
     function updateFieldsVisibility() {
-      if (typeSelect.value === "OVA") {
+      if (typeSelect.value === "OVA" || typeSelect.value === "Film") {
         episodesField.style.display = "none";
         saisonsField.style.display = "none";
       } else {
@@ -215,7 +209,6 @@
     function afficherFiche(fiche) {
       const div = document.createElement("div");
       div.classList.add("synopsis-card");
-
       const id = "fiche-" + Date.now();
       div.setAttribute("id", id);
 
@@ -224,8 +217,8 @@
         (fiche.image ? `<img src="${fiche.image}" alt="Image de ${fiche.titre}">` : "") +
         `<p><strong>Type :</strong> ${fiche.type}</p>
          <p><strong>Genres :</strong> ${fiche.genres}</p>` +
-        (fiche.type !== "OVA" ? `<p><strong>Nombre d'épisodes :</strong> ${fiche.episodes}</p>` : "") +
-        (fiche.type !== "OVA" && fiche.saisons ? `<p><strong>Nombre de saisons :</strong> ${fiche.saisons}</p>` : "") +
+        (fiche.type !== "OVA" && fiche.type !== "Film" && fiche.episodes ? `<p><strong>Nombre d'épisodes :</strong> ${fiche.episodes}</p>` : "") +
+        (fiche.type === "Série" && fiche.saisons.trim() !== "" ? `<p><strong>Saison :</strong> ${fiche.saisons}</p>` : "") +
         `<p><strong>Durée :</strong> ${fiche.duree}</p>
          <p><strong>Âge conseillé :</strong> ${fiche.age}</p>
          <p><strong>Année de diffusion :</strong> ${fiche.annee}</p>
@@ -241,50 +234,38 @@
 
     function cacherBoutons(id) {
       const card = document.getElementById(id);
-      const buttons = card.querySelectorAll(".export-btn");
-      buttons.forEach((btn) => (btn.style.display = "none"));
+      card.querySelectorAll(".export-btn").forEach(btn => btn.style.display = "none");
     }
 
     function montrerBoutons(id) {
       const card = document.getElementById(id);
-      const buttons = card.querySelectorAll(".export-btn");
-      buttons.forEach((btn) => (btn.style.display = "inline-block"));
+      card.querySelectorAll(".export-btn").forEach(btn => btn.style.display = "inline-block");
     }
 
     function exportToImage(id, title) {
       cacherBoutons(id);
-      const node = document.getElementById(id);
-      html2canvas(node)
-        .then((canvas) => {
-          const link = document.createElement("a");
-          link.download = `${title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}.png`;
-          link.href = canvas.toDataURL();
-          link.click();
-          montrerBoutons(id);
-        })
-        .catch(() => {
-          montrerBoutons(id);
-        });
+      html2canvas(document.getElementById(id)).then(canvas => {
+        const link = document.createElement("a");
+        link.download = `${title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}.png`;
+        link.href = canvas.toDataURL();
+        link.click();
+        montrerBoutons(id);
+      });
     }
 
     function exportToPDF(id, title) {
       cacherBoutons(id);
-      const node = document.getElementById(id);
-      html2canvas(node)
-        .then((canvas) => {
-          const { jsPDF } = window.jspdf;
-          const pdf = new jsPDF();
-          const imgData = canvas.toDataURL("image/png");
-          const imgProps = pdf.getImageProperties(imgData);
-          const pdfWidth = pdf.internal.pageSize.getWidth();
-          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-          pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-          pdf.save(`${title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}.pdf`);
-          montrerBoutons(id);
-        })
-        .catch(() => {
-          montrerBoutons(id);
-        });
+      html2canvas(document.getElementById(id)).then(canvas => {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF();
+        const imgData = canvas.toDataURL("image/png");
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+        pdf.save(`${title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}.pdf`);
+        montrerBoutons(id);
+      });
     }
   </script>
 </body>
