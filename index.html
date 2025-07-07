@@ -9,14 +9,28 @@
     body {
       font-family: 'Segoe UI', sans-serif;
       background-color: #fffaf3;
-      color: #000000; /* Texte en noir */
+      color: #000000;
       max-width: 700px;
       margin: auto;
       padding: 20px;
     }
+    /* Double titre avec légère ombre */
     h1 {
       text-align: center;
-      color: #000000; /* Titre en noir */
+      color: #000000;
+      font-size: 2.5em;
+      position: relative;
+      line-height: 1.2;
+      margin-bottom: 30px;
+    }
+    h1::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 5px;
+      left: 3px;
+      color: #444444;
+      z-index: -1;
+      opacity: 0.5;
     }
     form {
       background-color: #fff0f5;
@@ -28,7 +42,7 @@
     label {
       display: block;
       margin-top: 10px;
-      color: #000000; /* Labels en noir */
+      color: #000000;
     }
     input[type="text"],
     textarea,
@@ -47,7 +61,7 @@
     button {
       margin-top: 10px;
       padding: 8px 12px;
-      background-color: #9370db; /* violet clair */
+      background-color: #3b82f6; /* bleu clair */
       color: white;
       border: none;
       border-radius: 4px;
@@ -55,7 +69,7 @@
       transition: background-color 0.3s ease;
     }
     button:hover {
-      background-color: #7a5dcc; /* violet un peu plus foncé au survol */
+      background-color: #2563eb; /* bleu plus foncé au survol */
     }
     .synopsis-card {
       background-color: #fff;
@@ -64,11 +78,11 @@
       padding: 10px;
       border-radius: 6px;
       position: relative;
-      color: #000000; /* texte noir dans les fiches aussi */
+      color: #000000;
     }
     .synopsis-card h2 {
       margin: 0 0 10px 0;
-      color: #000000; /* titre fiche noir */
+      color: #000000;
       text-align: center;
       font-size: 1.8em;
     }
@@ -86,7 +100,7 @@
     }
     .export-btn {
       margin-right: 10px;
-      background-color: #9370db;
+      background-color: #3b82f6; /* même bleu que les boutons */
       color: white;
       border: none;
       border-radius: 4px;
@@ -95,12 +109,12 @@
       transition: background-color 0.3s ease;
     }
     .export-btn:hover {
-      background-color: #7a5dcc;
+      background-color: #2563eb;
     }
   </style>
 </head>
 <body>
-  <h1>Fiches Manga</h1>
+  <h1 data-text="Fiches Manga">Fiches Manga</h1>
   <form id="synopsisForm">
     <label for="titre">Titre du manga :</label>
     <input type="text" id="titre" required />
@@ -266,14 +280,4 @@
           const imgProps = pdf.getImageProperties(imgData);
           const pdfWidth = pdf.internal.pageSize.getWidth();
           const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-          pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-          pdf.save(`${title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}.pdf`);
-          montrerBoutons(id);
-        })
-        .catch(() => {
-          montrerBoutons(id);
-        });
-    }
-  </script>
-</body>
-</html>
+          pdf.addImage(imgData, "PNG",
